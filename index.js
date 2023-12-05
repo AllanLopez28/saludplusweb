@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Rutas principales
 
-app.use('/api', saludplusRouter);
+app.use('/', saludplusRouter);
 
 // Middleware para manejar errores
 app.use((err, req, res, next) => {
