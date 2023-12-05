@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require('cors');
+
 require("dotenv").config();
 
 const saludplusRouter = require('./routes/saludplus.router');
@@ -11,6 +13,7 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware para analizar solicitudes JSON
 app.use(bodyParser.json());
+app.use(cors());
 
 // Conexión a la base de datos MongoDB
 mongoose.connect(process.env.MONGO_URI, {
