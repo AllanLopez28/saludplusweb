@@ -1,27 +1,30 @@
-require("dotenv").config();
 const express = require("express");
-const debug = require("debug")("saludPlus-api:server");
-const morgan = require("morgan");
-const cors = require("cors");
-
-const envconfig = require("./config/env.config");
-const database = require("./config/db.config");
-const mainRouter = require("./routes/main.router");
-const {errorHandler} = require("./middlewares/error.middleware"); 
-
 const app = express();
-const port = envconfig.PORT;
-app.listen(port, () => {
-  debug(`Server is running on port ${port}`);
-});
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-database.connect();
+const errorHandler = require('./middlewares/error.middleware');
+const saludplusRouter = require('./routes/saludplus.router');
 
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(cors());
+// Configuración del puerto
+const PORT = process.env.PORT || 3001;
 
-app.use("/api/v1", mainRouter);
+// Middleware para analizar solicitudes JSON
+app.use(bodyParser.json());
+
+// Conexión a la base de datos MongoDB
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(error => console.error("MongoDB connection error:", error));
+
+// Rutas principales
+app.use('/api', saludplusRouter);
+
+// Middleware para manejar errores
 app.use(errorHandler);
 
-
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
