@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const errorHandler = require('./middlewares/error.middleware');
 const saludplusRouter = require('./routes/saludplus.router');
 
 // Configuración del puerto
@@ -22,7 +21,10 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use('/api', saludplusRouter);
 
 // Middleware para manejar errores
-app.use(errorHandler);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
 
 // Iniciar el servidor
 app.listen(PORT, () => {
