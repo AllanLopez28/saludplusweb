@@ -48,6 +48,10 @@ const {
 
 const runValidation = require("../middlewares/validator.middleware");
 
+router.get("/", (req, res) => {
+  res.send("¡Bienvenido a SaludPlus!");
+});
+
 router.post("/patients", runValidation, createPatient);
 router.get("/getpatients", runValidation, getPatients);
 router.get("/patients/:id", runValidation, getOnePatient);

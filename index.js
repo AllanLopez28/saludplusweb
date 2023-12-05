@@ -21,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch(error => console.error("MongoDB connection error:", error));
 
 // Rutas principales
+
 app.use('/api', saludplusRouter);
 
 // Middleware para manejar errores
